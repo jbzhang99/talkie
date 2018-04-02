@@ -40,8 +40,8 @@ public class Terminal extends BaseEntity {
     @ApiModelProperty(value = "名称")
     private String name;
 
-    @ApiModelProperty(value = "用户")
-    private User user;
+//    @ApiModelProperty(value = "用户")
+//    private User user;
 
 
     @ApiModelProperty(value = "定位表，，一对多")
@@ -76,17 +76,17 @@ public class Terminal extends BaseEntity {
     }
 
 
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    @JsonIgnore
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "terminal", cascade = {CascadeType.ALL})

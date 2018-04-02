@@ -124,6 +124,8 @@ public class EnterpriseService extends BaseServiceImpl<User, Long> implements Ba
         Integer intTemp2 = jdbcTemplate.queryForObject(tempSql2, Integer.class, id);
         countNOUser += intTemp2;
 
+
+
         List<User> userList = enterpriseRepository.findByParentIdAndMerchantLevel(id,"7");
         if(userList.size() >0){
 
