@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud.module:module-base:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/module/module-base/0.0.1-SNAPSHOT/module-base-0.0.1-20180329.015800-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/module/module-base/0.0.1-SNAPSHOT/module-base-0.0.1-20180329.015800-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/module/module-base/0.0.1-SNAPSHOT/module-base-0.0.1-20180329.015800-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

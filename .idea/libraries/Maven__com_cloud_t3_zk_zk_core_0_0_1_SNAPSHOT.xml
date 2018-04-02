@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud.t3.zk:zk-core:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/zk/zk-core/0.0.1-SNAPSHOT/zk-core-0.0.1-20180326.113753-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/zk/zk-core/0.0.1-SNAPSHOT/zk-core-0.0.1-20180326.113753-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/zk/zk-core/0.0.1-SNAPSHOT/zk-core-0.0.1-20180326.113753-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

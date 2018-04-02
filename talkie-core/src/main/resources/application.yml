@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 800
+    accept-count: 800
+
+spring:
+  aop:
+    auto: true
+  messages:
+    basename: message
+  redis:
+    database: 5
+    host: 127.0.0.1
+    port: 6379
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://10.0.1.200:3306/talkie?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&autoReconnectForPools=true&failOverReadOnly=false&rewriteBatchedStatements=true&useSSL=false
+    username: root
+    password: 123456
+    druid:
+      initial-size: 5
+      min-idle: 50
+      time-between-eviction-runs-millis: 300000
+      min-evictable-idle-time-millis: 300000
+      max-active: 1000
+      max-wait: 600000
+      filters: tat,wall,log4j
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      maxOpenPreparedStatements: 200
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:30000/eureka/

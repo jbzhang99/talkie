@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud.t3.redis:redis-core:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/redis/redis-core/0.0.1-SNAPSHOT/redis-core-0.0.1-20180329.015959-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/redis/redis-core/0.0.1-SNAPSHOT/redis-core-0.0.1-20180329.015959-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/t3/redis/redis-core/0.0.1-SNAPSHOT/redis-core-0.0.1-20180329.015959-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

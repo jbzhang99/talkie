@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud:talkie-sync2busi-aop:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie-sync2busi-aop/0.0.1-SNAPSHOT/talkie-sync2busi-aop-0.0.1-20180329.074059-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie-sync2busi-aop/0.0.1-SNAPSHOT/talkie-sync2busi-aop-0.0.1-20180329.074059-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie-sync2busi-aop/0.0.1-SNAPSHOT/talkie-sync2busi-aop-0.0.1-20180329.074059-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

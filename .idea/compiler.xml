@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="talkie-admin" />
+        <module name="talkie-client" />
+        <module name="talkie-core" />
+        <module name="talkie-discovery" />
+        <module name="talkie-mysql" />
+        <module name="talkie-swagger2" />
+        <module name="talkie-sync-model" />
+        <module name="talkie-sync2busi" />
+        <module name="talkie-utils" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="talkie" target="1.8" />
+      <module name="talkie-admin" target="1.8" />
+      <module name="talkie-client" target="1.8" />
+      <module name="talkie-core" target="1.8" />
+      <module name="talkie-discovery" target="1.8" />
+      <module name="talkie-mysql" target="1.8" />
+      <module name="talkie-swagger2" target="1.8" />
+      <module name="talkie-sync-model" target="1.8" />
+      <module name="talkie-sync2busi" target="1.8" />
+      <module name="talkie-utils" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

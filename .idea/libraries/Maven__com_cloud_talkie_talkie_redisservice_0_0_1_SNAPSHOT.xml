@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud.talkie:talkie-redisservice:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie/talkie-redisservice/0.0.1-SNAPSHOT/talkie-redisservice-0.0.1-20180329.060229-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie/talkie-redisservice/0.0.1-SNAPSHOT/talkie-redisservice-0.0.1-20180329.060229-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/talkie/talkie-redisservice/0.0.1-SNAPSHOT/talkie-redisservice-0.0.1-20180329.060229-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

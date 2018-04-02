@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.meituo.talkie:talkie-api:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/meituo/talkie/talkie-api/0.0.1-SNAPSHOT/talkie-api-0.0.1-20180329.060154-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/meituo/talkie/talkie-api/0.0.1-SNAPSHOT/talkie-api-0.0.1-20180329.060154-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/meituo/talkie/talkie-api/0.0.1-SNAPSHOT/talkie-api-0.0.1-20180329.060154-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

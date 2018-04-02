@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.cloud.common:common-core:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/common/common-core/0.0.1-SNAPSHOT/common-core-0.0.1-20180329.015730-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/common/common-core/0.0.1-SNAPSHOT/common-core-0.0.1-20180329.015730-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/cloud/common/common-core/0.0.1-SNAPSHOT/common-core-0.0.1-20180329.015730-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

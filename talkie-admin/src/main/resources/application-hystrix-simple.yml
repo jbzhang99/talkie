@@ -1,0 +1,12 @@
+
+# 配置hystrix的参数
+hystrix:
+  threadpool:
+    # default: 默认参数，作用的所有的hystrix的客户端
+    default:
+      coreSize: 100
+  command:
+    default:
+      fallback:
+        # 是否关闭回退方法
+        enabled: true

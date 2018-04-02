@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/talkie.iml" filepath="$PROJECT_DIR$/.idea/talkie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-admin/talkie-admin.iml" filepath="$PROJECT_DIR$/talkie-admin/talkie-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-client/talkie-client.iml" filepath="$PROJECT_DIR$/talkie-client/talkie-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-core/talkie-core.iml" filepath="$PROJECT_DIR$/talkie-core/talkie-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-discovery/talkie-discovery.iml" filepath="$PROJECT_DIR$/talkie-discovery/talkie-discovery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-mysql/talkie-mysql.iml" filepath="$PROJECT_DIR$/talkie-mysql/talkie-mysql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-swagger2/talkie-swagger2.iml" filepath="$PROJECT_DIR$/talkie-swagger2/talkie-swagger2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-sync-model/talkie-sync-model.iml" filepath="$PROJECT_DIR$/talkie-sync-model/talkie-sync-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-sync2busi/talkie-sync2busi.iml" filepath="$PROJECT_DIR$/talkie-sync2busi/talkie-sync2busi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/talkie-utils/talkie-utils.iml" filepath="$PROJECT_DIR$/talkie-utils/talkie-utils.iml" />
+    </modules>
+  </component>
+</project>

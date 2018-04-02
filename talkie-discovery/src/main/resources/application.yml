@@ -1,0 +1,11 @@
+server:
+  port: 30000
+
+eureka:
+  instance:
+    hostname: localhost
+    healthcheck:
+      enabled: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
