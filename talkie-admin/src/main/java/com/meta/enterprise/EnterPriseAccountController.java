@@ -46,7 +46,6 @@ public class EnterPriseAccountController extends BaseControllerUtil {
         try {
             result = enterPriseAccountClient.create(mEnterpriseAccount);
         } catch (Exception e) {
-
             logger.error("创建/修改账号失败！");
             logger.error(e.getMessage(), e);
             return error("创建/修改账号失败！");
@@ -72,7 +71,6 @@ public class EnterPriseAccountController extends BaseControllerUtil {
                 findDetail(result);
             }
         } catch (Exception e) {
-
             logger.error("获取企业(账号管理)列表失败");
             logger.error(e.getMessage(), e);
             return error("获取企业(账号管理)列表失败！");
@@ -109,7 +107,6 @@ public class EnterPriseAccountController extends BaseControllerUtil {
         try {
             result = enterPriseAccountClient.modifyStatusById(id, status);
         } catch (Exception e) {
-
             logger.error("变更状态失败");
             logger.error(e.getMessage(), e);
             return error("变更状态失败！");
@@ -126,7 +123,6 @@ public class EnterPriseAccountController extends BaseControllerUtil {
         try {
             result = enterPriseAccountClient.delete(id);
         } catch (Exception e) {
-
             logger.error("删除账号失败");
             logger.error(e.getMessage(), e);
             return error("删除账号失败！");

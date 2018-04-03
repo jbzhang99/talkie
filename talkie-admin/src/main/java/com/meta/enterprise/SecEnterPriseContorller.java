@@ -68,11 +68,15 @@ public class SecEnterPriseContorller extends BaseControllerUtil {
 
 
     private Result<MEnterprise> findDetail(Result<MEnterprise> result) {
-        result.getDetailModelList().stream().forEach(a->{
+        result.getDetailModelList().stream().forEach(a -> {
             Result<MQEnterprise> mqUser = null;
             mqUser = qEnterpriseClient.findByUserId(a.getId());
-            a.setRemainQ(mqUser.getObj().getBalance());
-            a.setModifyDate(mqUser.getObj().getModifyDate());
+            if (!RegexUtil.isNull(mqUser.getObj())) {
+                a.setRemainQ(mqUser.getObj().getBalance());
+                a.setModifyDate(mqUser.getObj().getModifyDate());
+            } else {
+                a.setRemainQ(0D);
+            }
             a.setCountCompany(secEnterPriseClient.countByParentIdAndMerchantLevel(a.getId(), "7"));
             if ("zh".equals(getLanguage())) {
                 if (!RegexUtil.isNull(a.getStatus())) {

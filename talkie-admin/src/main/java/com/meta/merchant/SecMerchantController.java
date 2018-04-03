@@ -67,11 +67,15 @@ public class SecMerchantController extends BaseControllerUtil {
 
     private Result<MMerchant> findDetail(Result<MMerchant> result) {
 
-        result.getDetailModelList().stream().forEach(o->{
+        result.getDetailModelList().stream().forEach(o -> {
             Result<MQMerchant> mqUser = null;
             mqUser = qMerchantClient.get(o.getId());
-            o.setRemainQ(mqUser.getObj().getBalance());
-            o.setModifyDate(mqUser.getObj().getModifyDate());
+            if (!RegexUtil.isNull(mqUser.getObj())) {
+                o.setRemainQ(mqUser.getObj().getBalance());
+                o.setModifyDate(mqUser.getObj().getModifyDate());
+            }else{
+                o.setRemainQ(0D);
+            }
             if ("zh".equals(getLanguage())) {
                 //中文
                 o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));

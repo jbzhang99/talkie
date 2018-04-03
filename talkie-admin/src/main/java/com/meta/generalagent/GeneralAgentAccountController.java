@@ -129,10 +129,8 @@ public class GeneralAgentAccountController extends BaseControllerUtil {
     }
 
     private Result<MGeneralAgentAccount> findDetail(Result<MGeneralAgentAccount> result) {
-
        result.getDetailModelList().stream().forEach(a->{
            if ("zh".equals(getLanguage())) {
-               //中文
                if (!RegexUtil.isNull(a.getMerchantLevel())) {
                    a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
                }

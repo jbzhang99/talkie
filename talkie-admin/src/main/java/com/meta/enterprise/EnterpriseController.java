@@ -257,31 +257,36 @@ public class EnterpriseController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MEnterprise> findDetail(Result<MEnterprise>result) {
+    private Result<MEnterprise> findDetail(Result<MEnterprise> result) {
 
-       result.getDetailModelList().stream().forEach(a->{
+        result.getDetailModelList().stream().forEach(a -> {
 
-           if ("zh".equals(getLanguage())) {
-               a.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
-               if (!RegexUtil.isNull(a.getMerchantLevel())) {
-                   a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
-               }
-               a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
-           } else if ("en".equals(getLanguage())) {
-               a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
-               if (!RegexUtil.isNull(a.getMerchantLevel())) {
-                   a.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(a.getMerchantLevel()));
-               }
-               a.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
-           }
+            if ("zh".equals(getLanguage())) {
+                a.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+                if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                    a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
+                }
+                a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
+            } else if ("en".equals(getLanguage())) {
+                a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
+                if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                    a.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(a.getMerchantLevel()));
+                }
+                a.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+            }
 
-           Result<MQEnterprise> mqUser = null;
-           mqUser = qEnterpriseClient.findByUserId(a.getId());
-           a.setRemainQ(mqUser.getObj().getBalance());
-           a.setModifyDate(mqUser.getObj().getModifyDate());
-           a.setCountCompany(enterpriseClient.countByParentIdAndMerchantLevel(a.getId(), "7"));
+            Result<MQEnterprise> mqUser = null;
+            mqUser = qEnterpriseClient.findByUserId(a.getId());
 
-       });
+            if (!RegexUtil.isNull(mqUser.getObj())) {
+                a.setRemainQ(mqUser.getObj().getBalance() != null ? mqUser.getObj().getBalance() : 0D);
+                a.setModifyDate(mqUser.getObj().getModifyDate() );
+            } else {
+                a.setRemainQ(0D);
+            }
+            a.setCountCompany(enterpriseClient.countByParentIdAndMerchantLevel(a.getId(), "7"));
+
+        });
         return result;
     }
 

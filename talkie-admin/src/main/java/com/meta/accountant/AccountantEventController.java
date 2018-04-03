@@ -66,7 +66,6 @@ public class AccountantEventController extends BaseControllerUtil {
                 if (!RegexUtil.isNull(a.getType())) {
                     a.setTypeName(CommonUtils.findByUserEventType(a.getType().toString()));
                 }
-
             } else if ("en".equals(getLanguage())) {
                 if (!RegexUtil.isNull(a.getType())) {
                     a.setTypeName(EnglishCommonUtils.findByUserEventType(a.getType().toString()));

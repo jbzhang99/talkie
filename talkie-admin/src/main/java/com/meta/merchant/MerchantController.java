@@ -57,33 +57,7 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0 && result.getDetailModelList() != null) {
-//                findDetail(result);
-//
-                result.getDetailModelList().stream().forEach(
-                        o -> {
-                            if ("zh".equals(getLanguage())) {
-                                o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
-                            } else if ("en".equals(getLanguage())) {
-                                o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
-                            }
-                            Result<MQMerchant> mqUser = null;
-                            mqUser = qMerchantClient.get(o.getId());
-                            o.setRemainQ(mqUser.getObj().getBalance());
-                            Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
-                            if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
-                                Long count = 0L;
-                                for (MMerchant mMerchant : mMerchantResult1.getDetailModelList()) {
-                                    count += merchantClient.countParnetIdAndMerchantLevel(mMerchant.getId(), "7");
-                                }
-                                o.setCountTerminal(count);
-                            }
-                            o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
-                            o.setModifyDate(mqUser.getObj().getModifyDate());
-                        }
-
-
-                );
-
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取代理列表异常！");
@@ -316,7 +290,12 @@ public class MerchantController extends BaseControllerUtil {
                     }
                     Result<MQMerchant> mqUser = null;
                     mqUser = qMerchantClient.get(o.getId());
-                    o.setRemainQ(mqUser.getObj().getBalance());
+                    if (!RegexUtil.isNull(mqUser.getObj())) {
+                        o.setRemainQ(mqUser.getObj().getBalance() );
+                        o.setModifyDate(mqUser.getObj().getModifyDate());
+                    }else{
+                        o.setRemainQ(0D);
+                    }
                     Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
                     if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
                         mMerchantResult1.getDetailModelList().forEach(a -> {
@@ -325,7 +304,7 @@ public class MerchantController extends BaseControllerUtil {
                         });
                     }
                     o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
-                    o.setModifyDate(mqUser.getObj().getModifyDate());
+
                 }
         );
         return result;
