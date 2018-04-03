@@ -57,7 +57,7 @@ public class MerchantController extends BaseControllerUtil {
             result = merchantClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0 && result.getDetailModelList() != null) {
                 findDetail(result, getLanguage());
-
+//
 //                result.getDetailModelList().stream().map( o->{
 //                 if("zh".endsWith(getLanguage())){
 //                     o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
