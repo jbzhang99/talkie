@@ -59,7 +59,7 @@ public class EnterpriseController extends BaseControllerUtil {
         try {
             result = enterpriseClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
 
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class EnterpriseController extends BaseControllerUtil {
         try {
             result = enterpriseClient.searchByTerminal(filters, "-createDate", size, parentId, GT_createDate, LT_createDate, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
 
         } catch (Exception e) {
@@ -145,7 +145,7 @@ public class EnterpriseController extends BaseControllerUtil {
         try {
             result = enterpriseClient.get(id);
             if (!RegexUtil.isNull(result.getObj().getStatus())) {
-                findObj(result, getLanguage());
+                findObj(result);
             }
 
         } catch (Exception e) {
@@ -257,37 +257,39 @@ public class EnterpriseController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MEnterprise> findDetail(Result<MEnterprise> mEnterpriseResult, String language) {
+    private Result<MEnterprise> findDetail(Result<MEnterprise>result) {
 
-        for (MEnterprise temp : mEnterpriseResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                temp.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(temp.getId())));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-            } else if ("en".equals(language)) {
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-                temp.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(temp.getId())));
+       result.getDetailModelList().stream().forEach(a->{
 
-            }
-            Result<MQEnterprise> mqUser = null;
-            mqUser = qEnterpriseClient.findByUserId(temp.getId());
-            temp.setRemainQ(mqUser.getObj().getBalance());
-            temp.setModifyDate(mqUser.getObj().getModifyDate());
-            temp.setCountCompany(enterpriseClient.countByParentIdAndMerchantLevel(temp.getId(), "7"));
-        }
-        return mEnterpriseResult;
+           if ("zh".equals(getLanguage())) {
+               a.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+               if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                   a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
+               }
+               a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
+           } else if ("en".equals(getLanguage())) {
+               a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
+               if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                   a.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(a.getMerchantLevel()));
+               }
+               a.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+           }
+
+           Result<MQEnterprise> mqUser = null;
+           mqUser = qEnterpriseClient.findByUserId(a.getId());
+           a.setRemainQ(mqUser.getObj().getBalance());
+           a.setModifyDate(mqUser.getObj().getModifyDate());
+           a.setCountCompany(enterpriseClient.countByParentIdAndMerchantLevel(a.getId(), "7"));
+
+       });
+        return result;
     }
 
-    private Result<MEnterprise> findObj(Result<MEnterprise> mMerchantResult, String language) {
-        if ("zh".equals(language)) {
+    private Result<MEnterprise> findObj(Result<MEnterprise> mMerchantResult) {
+        if ("zh".equals(getLanguage())) {
             //中文
             mMerchantResult.getObj().setStatusName(CommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
-        } else if ("en".equals(language)) {
+        } else if ("en".equals(getLanguage())) {
             mMerchantResult.getObj().setStatusName(EnglishCommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
         }
         return mMerchantResult;

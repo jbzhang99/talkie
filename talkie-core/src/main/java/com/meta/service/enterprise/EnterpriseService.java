@@ -127,7 +127,7 @@ public class EnterpriseService extends BaseServiceImpl<User, Long> implements Ba
 
 
         List<User> userList = enterpriseRepository.findByParentIdAndMerchantLevel(id,"7");
-        if(userList.size() >0){
+        if(userList.size() >0 && null != userList){
 
             for(User temp: userList){
                 Boolean isOnline = syncUtils.getOnlineStatusByUserId(temp.getId());

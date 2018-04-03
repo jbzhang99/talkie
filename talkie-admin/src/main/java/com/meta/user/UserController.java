@@ -62,7 +62,6 @@ public class UserController extends BaseControllerUtil {
             jo.put("userId", result.getObj().getId());
             jo.put("roleId", result.getObj().getMerchantLevel());
             String token = JwtUtil.createJWT(Constant.JWT_ID, jo.toString(), Constant.JWT_TTL);
-            //   String refreshToken = JwtUtil.createJWT(Constant.JWT_ID, jo.toString(), Constant.JWT_REFRESH_TTL);
             result.getObj().setToken(token);
             result.getObj().setPassword("");
         } catch (Exception e) {
@@ -109,7 +108,7 @@ public class UserController extends BaseControllerUtil {
         try {
             result = userClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取列表异常！");
@@ -183,7 +182,7 @@ public class UserController extends BaseControllerUtil {
         Result<MUser> result = null;
         result = userClient.get(id);
         if(!RegexUtil.isNull(result.getObj())){
-            findObj(result,getLanguage());
+            findObj(result);
         }
         return result;
     }
@@ -331,7 +330,7 @@ public class UserController extends BaseControllerUtil {
         try {
             result = userClient.searchUserAndGroup(filters, currGroupList, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取列表异常！");
@@ -415,7 +414,7 @@ public class UserController extends BaseControllerUtil {
         try {
             result = userClient.searchUserAndGroupAndDate(filters, currGroupList, GT_createDate, LT_createDate, "-createDate", size, page);
 
-            findDetail(result, language);
+            findDetail(result);
         } catch (Exception e) {
             logger.error("获取列表异常！");
             logger.error(e.getMessage(), e);
@@ -442,65 +441,61 @@ public class UserController extends BaseControllerUtil {
 //        return result;
 //    }
 
-    private Result<MUser> findDetail(Result<MUser> mUser, String language) {
-        String strFuns = "";
-        for (MUser temp : mUser.getDetailModelList()) {
+    private Result<MUser> findDetail(Result<MUser> mUser) {
+        mUser.getDetailModelList().stream().forEach(a->{
             Result<MQUser> mqUser = null;
             //可能会出现空值问题
-            mqUser = qUserClient.findByUserId(temp.getId());
+            mqUser = qUserClient.findByUserId(a.getId());
             if (mqUser.getObj() !=null){
-                temp.setModifyDate(mqUser.getObj().getModifyDate()!=null ? mqUser.getObj().getModifyDate() :null);
-                temp.setRemainQ(mqUser.getObj().getBalance());
+                a.setModifyDate(mqUser.getObj().getModifyDate()!=null ? mqUser.getObj().getModifyDate() :null);
+                a.setRemainQ(mqUser.getObj().getBalance());
             }
-
-
-            if ("zh".equals(language)) {
-                temp.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(temp.getId())));
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getFuncs())) {
-                    String[] strArray = temp.getFuncs().split(",");
+            if ("zh".equals(getLanguage())) {
+                a.setIsOnLine(CommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+                a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
+                if (!RegexUtil.isNull(a.getFuncs())) {
+                    String[] strArray = a.getFuncs().split(",");
+                    String strFuns = "";
                     for (int x = 0; x < strArray.length; x++) {
-                        if (RegexUtil.isNull(strArray[x])) {
-                            continue;
-                        }
                         if (x + 1 == strArray.length) {
                             strFuns += CommonUtils.findByUserFuns(strArray[x]);
                         } else {
                             strFuns += CommonUtils.findByUserFuns(strArray[x]) + ",";
                         }
-
-                    }
-                }
-            } else if ("en".equals(language)) {
-                temp.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(temp.getId())));
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getFuncs())) {
-                    String[] strArray = temp.getFuncs().split(",");
-                    for (int x = 0; x < strArray.length; x++) {
                         if (RegexUtil.isNull(strArray[x])) {
                             continue;
                         }
+                    }
+                    a.setFuncsName(strFuns);
+                }
+            } else if ("en".equals(getLanguage())) {
+                a.setIsOnLine(EnglishCommonUtils.isOnLine(userClient.queryUserOnlineStatus(a.getId())));
+                a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
+                if (!RegexUtil.isNull(a.getFuncs())) {
+                    String strFuns = "";
+                    String[] strArray = a.getFuncs().split(",");
+                    for (int x = 0; x < strArray.length; x++) {
                         if (x + 1 == strArray.length) {
                             strFuns += EnglishCommonUtils.findByUserFuns(strArray[x]);
                         } else {
                             strFuns += EnglishCommonUtils.findByUserFuns(strArray[x]) + ",";
                         }
-
+                        if (RegexUtil.isNull(strArray[x])) {
+                            continue;
+                        }
                     }
+                    a.setFuncsName(strFuns);
                 }
             }
-            temp.setFuncsName(strFuns);
-            strFuns = "";
-        }
-
+        });
 
         return mUser;
     }
-    private Result<MUser> findObj(Result<MUser> mUserResult, String language) {
-        if ("zh".equals(language)) {
+    private Result<MUser> findObj(Result<MUser> mUserResult) {
+        if ("zh".equals(getLanguage())) {
             //中文
             mUserResult.getObj().setStatusName(CommonUtils.findByStatusName(mUserResult.getObj().getStatus()));
-        } else if ("en".equals(language)) {
+        } else if ("en".equals(getLanguage())) {
             mUserResult.getObj().setStatusName(EnglishCommonUtils.findByStatusName(mUserResult.getObj().getStatus()));
         }
         return mUserResult;

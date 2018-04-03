@@ -46,14 +46,9 @@ public class BoardCastController extends BaseControllerUtil {
         try {
             result = boardCastClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                result.getDetailModelList().forEach(temp->
-                        {
-
+                result.getDetailModelList().forEach(temp-> {
                             temp.setStatusName(CommonUtils.findByBoardCastType(temp.getStatus()));
                         });
-//                for (MBoardCast temp : result.getDetailModelList()) {
-//                    temp.setStatusName(CommonUtils.findByBoardCastType(temp.getStatus()));
-//                }
 
             }
         } catch (Exception e) {

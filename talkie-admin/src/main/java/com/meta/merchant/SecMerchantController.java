@@ -54,7 +54,7 @@ public class SecMerchantController extends BaseControllerUtil {
         try {
             result = secMerchantClient.search(filters, sorts, size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
 
         } catch (Exception e) {
@@ -65,36 +65,38 @@ public class SecMerchantController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MMerchant> findDetail(Result<MMerchant> mMerchantResult, String language) {
-        for (MMerchant temp : mMerchantResult.getDetailModelList()) {
+    private Result<MMerchant> findDetail(Result<MMerchant> result) {
+
+        result.getDetailModelList().stream().forEach(o->{
             Result<MQMerchant> mqUser = null;
-            mqUser = qMerchantClient.get(temp.getId());
-            temp.setRemainQ(mqUser.getObj().getBalance());
-            temp.setModifyDate(mqUser.getObj().getModifyDate());
-            if ("zh".equals(language)) {
+            mqUser = qMerchantClient.get(o.getId());
+            o.setRemainQ(mqUser.getObj().getBalance());
+            o.setModifyDate(mqUser.getObj().getModifyDate());
+            if ("zh".equals(getLanguage())) {
                 //中文
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
+                o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
+                if (!RegexUtil.isNull(o.getMerchantLevel())) {
+                    o.setMerchantLevelName(CommonUtils.findMerchantLevel(o.getMerchantLevel()));
                 }
 
 
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(temp.getMerchantLevel()));
+            } else if ("en".equals(getLanguage())) {
+                if (!RegexUtil.isNull(o.getMerchantLevel())) {
+                    o.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(o.getMerchantLevel()));
                 }
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
+                o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
 
             }
-        }
-        return mMerchantResult;
+        });
+
+        return result;
     }
 
-    private Result<MMerchant> findObj(Result<MMerchant> mMerchantResult, String language) {
-        if ("zh".equals(language)) {
+    private Result<MMerchant> findObj(Result<MMerchant> mMerchantResult) {
+        if ("zh".equals(getLanguage())) {
             //中文
             mMerchantResult.getObj().setStatusName(CommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
-        } else if ("en".equals(language)) {
+        } else if ("en".equals(getLanguage())) {
             mMerchantResult.getObj().setStatusName(EnglishCommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
         }
         return mMerchantResult;
@@ -210,7 +212,7 @@ public class SecMerchantController extends BaseControllerUtil {
         try {
             result = secMerchantClient.get(id);
             if (!RegexUtil.isNull(result.getObj().getStatus())) {
-                findObj(result, getLanguage());
+                findObj(result);
             }
         } catch (Exception e) {
             logger.error("获取子代理失败！");

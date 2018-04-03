@@ -55,10 +55,9 @@ public class QGeneralAgentEventController extends BaseControllerUtil {
         try {
             result = qGeneralAgentEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
-
             logger.error("获取Q币总代理操作记录失败");
             logger.error(e.getMessage(), e);
             return error("获取Q币总代理操作记录失败");
@@ -75,9 +74,12 @@ public class QGeneralAgentEventController extends BaseControllerUtil {
         try {
             result = qGeneralAgentEventClient.searchNoPage(filters);
             if (result.getDetailModelList().size() > 0) {
-                for (MQGeneralAgentEvent temp : result.getDetailModelList()) {
-                    temp.setTypeName(CommonUtils.findByQUserEventType(temp.getType().toString()));
-                }
+              result.getDetailModelList().stream().forEach(a->{
+                  if(a.getType() >0){
+                      a.setTypeName(CommonUtils.findByQUserEventType(a.getType().toString()));
+                  }
+              });
+
             }
         } catch (Exception e) {
             logger.error("获取Q币总代理操作记录失败");
@@ -87,16 +89,16 @@ public class QGeneralAgentEventController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MQGeneralAgentEvent> findDetail(Result<MQGeneralAgentEvent> mqGeneralAgentEventResult, String language) {
-        for (MQGeneralAgentEvent temp : mqGeneralAgentEventResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                temp.setTypeName(CommonUtils.findByQUserEventType(temp.getType().toString()));
-            } else if ("en".equals(language)) {
-                temp.setTypeName(EnglishCommonUtils.findByQUserEventType(temp.getType().toString()));
-
+    private Result<MQGeneralAgentEvent> findDetail(Result<MQGeneralAgentEvent> result) {
+        result.getDetailModelList().stream().forEach(a -> {
+            if ("zh".equals(getLanguage())) {
+                a.setTypeName(CommonUtils.findByQUserEventType(a.getType().toString()));
+            } else if ("en".equals(getLanguage())) {
+                a.setTypeName(EnglishCommonUtils.findByQUserEventType(a.getType().toString()));
             }
-        }
-        return mqGeneralAgentEventResult;
+        });
+
+        return result;
     }
 
 }

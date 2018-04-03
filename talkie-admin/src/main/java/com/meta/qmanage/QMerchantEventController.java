@@ -30,7 +30,7 @@ import java.util.List;
 @Api(value = "q_merchant_event", description = "Q币代理操作记录接口")
 public class QMerchantEventController extends BaseControllerUtil {
     //日志
-    private  static  final Logger logger= LoggerFactory.getLogger(QMerchantEventController.class);
+    private static final Logger logger = LoggerFactory.getLogger(QMerchantEventController.class);
 
     @Autowired
     private QMerchantEventClient qMerchantEventClient;
@@ -52,26 +52,25 @@ public class QMerchantEventController extends BaseControllerUtil {
         try {
             result = qMerchantEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取Q币代理操作失败！");
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return error("获取Q币代理操作失败！");
         }
         return result;
     }
 
-    private Result<MQMerchantEvent> findDetail(Result<MQMerchantEvent> mqMerchantEventResult, String language) {
-        for (MQMerchantEvent temp : mqMerchantEventResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                temp.setTypeName(CommonUtils.findByQUserEventType(temp.getType().toString()));
-            } else if ("en".equals(language)) {
-                temp.setTypeName(EnglishCommonUtils.findByQUserEventType(temp.getType().toString()));
-
+    private Result<MQMerchantEvent> findDetail(Result<MQMerchantEvent> result) {
+        result.getDetailModelList().stream().forEach(b -> {
+            if ("zh".equals(getLanguage())) {
+                b.setTypeName(CommonUtils.findByQUserEventType(b.getType().toString()));
+            } else if ("en".equals(getLanguage())) {
+                b.setTypeName(EnglishCommonUtils.findByQUserEventType(b.getType().toString()));
             }
-        }
-        return mqMerchantEventResult;
+        });
+        return result;
     }
 
     @RequestMapping(value = ServiceUrls.QMerchantEvent.Q_MERCHANT_EVENT, method = RequestMethod.GET)
@@ -89,7 +88,7 @@ public class QMerchantEventController extends BaseControllerUtil {
             }
         } catch (Exception e) {
             logger.error("获取Q币代理操作失败！");
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return error("获取Q币代理操作失败！");
         }
         return result;

@@ -48,7 +48,7 @@ public class AccountantEventController extends BaseControllerUtil {
             result = accountantEventClient.search(filters, sorts, size, page);
             if (result.getDetailModelList().size() > 0) {
                 if (result.getDetailModelList().size() > 0) {
-                    findDetail(result, getLanguage());
+                    findDetail(result);
                 }
             }
         } catch (Exception e) {
@@ -59,20 +59,22 @@ public class AccountantEventController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MAccountantEvent> findDetail(Result<MAccountantEvent> mAccountantEventResult, String language) {
-        for (MAccountantEvent temp : mAccountantEventResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(CommonUtils.findByUserEventType(temp.getType().toString()));
+    private Result<MAccountantEvent> findDetail(Result<MAccountantEvent> result) {
+
+        result.getDetailModelList().stream().forEach(a->{
+            if ("zh".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(CommonUtils.findByUserEventType(a.getType().toString()));
                 }
 
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(EnglishCommonUtils.findByUserEventType(temp.getType().toString()));
+            } else if ("en".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(EnglishCommonUtils.findByUserEventType(a.getType().toString()));
                 }
 
             }
-        }
-        return mAccountantEventResult;
+
+        });
+        return result;
     }
 }

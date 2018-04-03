@@ -49,16 +49,17 @@ public class MerchantEventController extends BaseControllerUtil {
         try {
             result = merchantEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                for (MMerchantEvent temp : result.getDetailModelList()) {
-                    if (temp.getType() > 0) {
-                        if ("zh".equals(getLanguage())) {
-                            //中文
-                            temp.setTypeName(CommonUtils.findByUserEventType(temp.getType().toString()));
+                result.getDetailModelList().stream().forEach(a->{
+                  if(a.getType() >0){
+                      if ("zh".equals(getLanguage())) {
+//                            //中文
+                            a.setTypeName(CommonUtils.findByUserEventType(a.getType().toString()));
                         } else if ("en".equals(getLanguage())) {
-                            temp.setTypeName(EnglishCommonUtils.findByUserEventType(temp.getType().toString()));
+                            a.setTypeName(EnglishCommonUtils.findByUserEventType(a.getType().toString()));
                         }
-                    }
-                }
+
+                  }
+                });
             }
         } catch (Exception e) {
             logger.error("获取代理操作列表失败！");

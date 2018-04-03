@@ -51,7 +51,7 @@ public class EnterPriseEventController extends BaseControllerUtil {
         try {
             result = enterpriseEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取企业操作列表失败！ ");
@@ -61,21 +61,21 @@ public class EnterPriseEventController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MEnterpriseEvent> findDetail(Result<MEnterpriseEvent> mEnterpriseEventResult, String language) {
-        for (MEnterpriseEvent temp : mEnterpriseEventResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(CommonUtils.findByUserEventType(temp.getType().toString()));
-                }
+    private Result<MEnterpriseEvent> findDetail(Result<MEnterpriseEvent> result) {
 
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(EnglishCommonUtils.findByUserEventType(temp.getType().toString()));
+        result.getDetailModelList().stream().forEach(a->{
+            if ("zh".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(CommonUtils.findByUserEventType(a.getType().toString()));
                 }
-
+            } else if ("en".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(EnglishCommonUtils.findByUserEventType(a.getType().toString()));
+                }
             }
-        }
-        return mEnterpriseEventResult;
+        });
+
+        return result;
     }
 
 }

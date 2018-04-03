@@ -13,6 +13,7 @@ import com.meta.model.qmanage.MQMerchant;
 import com.meta.model.totalinfo.MMerchantTotalCountInfo;
 import com.meta.model.totalinfo.MTotalCountInfo;
 import com.meta.regex.RegexUtil;
+import io.jsonwebtoken.lang.Collections;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -56,32 +57,32 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0 && result.getDetailModelList() != null) {
-                findDetail(result, getLanguage());
+//                findDetail(result);
 //
-//                result.getDetailModelList().stream().map( o->{
-//                 if("zh".endsWith(getLanguage())){
-//                     o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
-//                 } else if ("en".equals(getLanguage()) ){
-//                     o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
-//                 } else {
-//                     return  error("目前不支持该语言!");
-//                 }
-//                    Result<MQMerchant> mqUser = null;
-//                    mqUser = qMerchantClient.get(o.getId());
-//                    o.setRemainQ(mqUser.getObj().getBalance());
-//                    Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
-//                    if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
-////                        Long count = 0L;
-////                        for (MMerchant mMerchant : mMerchantResult1.getDetailModelList()) {
-////                            count += merchantClient.countParnetIdAndMerchantLevel(mMerchant.getId(), "7");
-////                        }
-////                        o.setCountTerminal(count);
-//                        (mMerchantResult1.getDetailModelList().stream().map()
-//                    }
-//                    o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
-//                    o.setModifyDate(mqUser.getObj().getModifyDate());
-//                    return  o;
-//                });
+                result.getDetailModelList().stream().forEach(
+                        o -> {
+                            if ("zh".equals(getLanguage())) {
+                                o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
+                            } else if ("en".equals(getLanguage())) {
+                                o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
+                            }
+                            Result<MQMerchant> mqUser = null;
+                            mqUser = qMerchantClient.get(o.getId());
+                            o.setRemainQ(mqUser.getObj().getBalance());
+                            Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
+                            if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
+                                Long count = 0L;
+                                for (MMerchant mMerchant : mMerchantResult1.getDetailModelList()) {
+                                    count += merchantClient.countParnetIdAndMerchantLevel(mMerchant.getId(), "7");
+                                }
+                                o.setCountTerminal(count);
+                            }
+                            o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
+                            o.setModifyDate(mqUser.getObj().getModifyDate());
+                        }
+
+
+                );
 
             }
         } catch (Exception e) {
@@ -104,7 +105,7 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.searchNoPage(filters);
             if (result.getDetailModelList().size() > 0 && result.getDetailModelList() != null) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取代理列表异常！");
@@ -184,7 +185,7 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.findByAccountAndParentId(account, parentId);
             if (!RegexUtil.isNull(result.getObj())) {
-                findObj(result, language);
+                findObj(result);
             }
         } catch (Exception e) {
             logger.error("查找失败！");
@@ -229,7 +230,7 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.searchByAccount(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, language);
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -295,7 +296,7 @@ public class MerchantController extends BaseControllerUtil {
         try {
             result = merchantClient.get(id);
             if (!RegexUtil.isNull(result.getObj().getStatus())) {
-                findObj(result, getLanguage());
+                findObj(result);
             }
         } catch (Exception e) {
             logger.error("删除失败！");
@@ -306,44 +307,35 @@ public class MerchantController extends BaseControllerUtil {
     }
 
 
-    private Result<MMerchant> findDetail(Result<MMerchant> mMerchantResult, String language) {
-        for (MMerchant temp : mMerchantResult.getDetailModelList()) {
-            Result<MQMerchant> mqUser = null;
-            mqUser = qMerchantClient.get(temp.getId());
-            temp.setRemainQ(mqUser.getObj().getBalance());
-
-            Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + temp.getId());
-            if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
-                Long count = 0L;
-                for (MMerchant mMerchant : mMerchantResult1.getDetailModelList()) {
-                    count += merchantClient.countParnetIdAndMerchantLevel(mMerchant.getId(), "7");
+    private Result<MMerchant> findDetail(Result<MMerchant> result) {
+        result.getDetailModelList().stream().forEach(o -> {
+                    if ("en".equals(getLanguage())) {
+                        o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
+                    } else if ("zh".equals(getLanguage())) {
+                        o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
+                    }
+                    Result<MQMerchant> mqUser = null;
+                    mqUser = qMerchantClient.get(o.getId());
+                    o.setRemainQ(mqUser.getObj().getBalance());
+                    Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
+                    if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
+                        mMerchantResult1.getDetailModelList().forEach(a -> {
+                            Long count = merchantClient.countParnetIdAndMerchantLevel(a.getId(), "7");
+                            o.setCountTerminal(count);
+                        });
+                    }
+                    o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
+                    o.setModifyDate(mqUser.getObj().getModifyDate());
                 }
-                temp.setCountTerminal(count);
-            }
-            temp.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(temp.getId(), "4"));
-            temp.setModifyDate(mqUser.getObj().getModifyDate());
-            if ("zh".equals(language)) {
-                //中文
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-            } else if ("en".equals(language)) {
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-
-            }
-        }
-        return mMerchantResult;
+        );
+        return result;
     }
 
-    private Result<MMerchant> findObj(Result<MMerchant> mMerchantResult, String language) {
-        if ("zh".equals(language)) {
+    private Result<MMerchant> findObj(Result<MMerchant> mMerchantResult) {
+        if ("zh".equals(getLanguage())) {
             //中文
             mMerchantResult.getObj().setStatusName(CommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
-        } else if ("en".equals(language)) {
+        } else if ("en".equals(getLanguage())) {
             mMerchantResult.getObj().setStatusName(EnglishCommonUtils.findByStatusName(mMerchantResult.getObj().getStatus()));
         }
         return mMerchantResult;

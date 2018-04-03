@@ -50,7 +50,7 @@ public class GeneralAgentAccountController extends BaseControllerUtil {
         try {
             result = generalAgentAccountClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取总代(账号管理)列表失败！");
@@ -128,22 +128,25 @@ public class GeneralAgentAccountController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MGeneralAgentAccount> findDetail(Result<MGeneralAgentAccount> mGeneralAgentAccountResult, String language) {
-        for (MGeneralAgentAccount temp : mGeneralAgentAccountResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                //中文
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(temp.getMerchantLevel()));
-                }
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
-            }
-        }
-        return mGeneralAgentAccountResult;
+    private Result<MGeneralAgentAccount> findDetail(Result<MGeneralAgentAccount> result) {
+
+       result.getDetailModelList().stream().forEach(a->{
+           if ("zh".equals(getLanguage())) {
+               //中文
+               if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                   a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
+               }
+               a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
+           } else if ("en".equals(getLanguage())) {
+               if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                   a.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(a.getMerchantLevel()));
+               }
+               a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
+           }
+
+
+       });
+        return result;
     }
 
 }

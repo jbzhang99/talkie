@@ -50,14 +50,13 @@ public class GeneralAgentEventController extends BaseControllerUtil {
         try {
             result = generalAgentEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                for (MGeneralAgentEvent temp : result.getDetailModelList()) {
+                result.getDetailModelList().stream().forEach(a -> {
                     if ("zh".equals(getLanguage())) {
-                        //中文
-                        temp.setTypeName(CommonUtils.findByUserEventType(temp.getType().toString()));
+                        a.setTypeName(CommonUtils.findByUserEventType(a.getType().toString()));
                     } else if ("en".equals(getLanguage())) {
-                        temp.setTypeName(EnglishCommonUtils.findByUserEventType(temp.getType().toString()));
+                        a.setTypeName(EnglishCommonUtils.findByUserEventType(a.getType().toString()));
                     }
-                }
+                });
             }
         } catch (Exception e) {
             logger.error("获取总代操作记录失败！");

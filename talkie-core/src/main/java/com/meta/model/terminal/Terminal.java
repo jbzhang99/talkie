@@ -105,7 +105,6 @@ public class Terminal extends BaseEntity {
     public List<MetaBaseStation> getMetaBaseStationList() {
         return metaBaseStationList;
     }
-
     public void setMetaBaseStationList(List<MetaBaseStation> metaBaseStationList) {
         this.metaBaseStationList = metaBaseStationList;
     }

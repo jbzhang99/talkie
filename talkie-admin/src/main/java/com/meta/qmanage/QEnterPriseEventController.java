@@ -30,7 +30,7 @@ import java.util.List;
 @Api(value = "q_enter_prise_event", description = "Q币企业操作记录接口")
 public class QEnterPriseEventController extends BaseControllerUtil {
     //日志
-    private  static  final Logger logger= LoggerFactory.getLogger(QEnterPriseEventController.class);
+    private static final Logger logger = LoggerFactory.getLogger(QEnterPriseEventController.class);
 
 
     @Autowired
@@ -49,16 +49,14 @@ public class QEnterPriseEventController extends BaseControllerUtil {
             @RequestParam(value = "page", required = false) int page) {
         Result<MQEnterpriseEvent> result = null;
         try {
-            result = qEnterpriseEventClient.search(filters,  "-createDate", size, page);
+            result = qEnterpriseEventClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                for (MQEnterpriseEvent temp : result.getDetailModelList()) {
-                    temp.setTypeName(CommonUtils.findByQUserEventType(temp.getType().toString()));
-                }
+                findDetail(result);
             }
         } catch (Exception e) {
 
             logger.error("获取Q币企业操作失败！");
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return error("获取Q币企业操作失败！");
         }
         return result;
@@ -73,19 +71,27 @@ public class QEnterPriseEventController extends BaseControllerUtil {
         try {
             result = qEnterpriseEventClient.searchNoPage(filters);
             if (result.getDetailModelList().size() > 0) {
-                for (MQEnterpriseEvent  temp : result.getDetailModelList()) {
-                    temp.setTypeName(CommonUtils.findByQUserEventType(temp.getType().toString()));
-                }
+                findDetail(result);
             }
         } catch (Exception e) {
 
             logger.error("获取Q币企业操作失败！");
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return error("获取Q币企业操作失败！");
         }
         return result;
     }
 
 
+
+    private Result<MQEnterpriseEvent> findDetail(Result<MQEnterpriseEvent> result) {
+        result.getDetailModelList().stream().forEach(a -> {
+            if (a.getType() > 0) {
+                a.setTypeName(CommonUtils.findByQUserEventType(a.getType().toString()));
+            }
+        });
+
+        return result;
+    }
 
 }

@@ -96,7 +96,7 @@ public class QSecEnterPriseEventController extends BaseControllerUtil {
         } catch (Exception e) {
             logger.error("删除失败！");
             logger.error(e.getMessage(),e);
-            return error("删除失败！");
+            return error("删除失败 ！");
         }
         return result;
     }

@@ -57,7 +57,7 @@ public class GroupController extends BaseControllerUtil {
         try {
             result = groupclient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
         } catch (Exception e) {
             logger.error("获取群组列表异常！");
@@ -67,29 +67,25 @@ public class GroupController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MGroup> findDetail(Result<MGroup> mGroupResult, String language) {
-        for (MGroup temp : mGroupResult.getDetailModelList()) {
-            if ("zh".equals(language)) {
-                //中文
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getStatus())) {
-                    temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus().toString()));
+    private Result<MGroup> findDetail(Result<MGroup> result) {
+        result.getDetailModelList().stream().forEach(a -> {
+            if (getLanguage().equals("zh")) {
+                if (!RegexUtil.isNull(a.getStatus())) {
+                    a.setStatusName(CommonUtils.findByStatusName(a.getStatus().toString()));
                 }
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(CommonUtils.findByGroupType(temp.getType().toString()));
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(CommonUtils.findByGroupType(a.getType().toString()));
                 }
-
-
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getStatus())) {
-                    temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus().toString()));
+            } else if ("en".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getStatus())) {
+                    a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus().toString()));
                 }
-                if (!RegexUtil.isNull(temp.getType())) {
-                    temp.setTypeName(EnglishCommonUtils.findByGroupType(temp.getType().toString()));
+                if (!RegexUtil.isNull(a.getType())) {
+                    a.setTypeName(EnglishCommonUtils.findByGroupType(a.getType().toString()));
                 }
             }
-        }
-        return mGroupResult;
+        });
+        return result;
     }
 
 

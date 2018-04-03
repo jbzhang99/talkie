@@ -28,7 +28,7 @@ import javax.validation.Valid;
 public class SecMerchantAccountController extends BaseControllerUtil {
 
     //日志
-    private  static  final Logger logger= LoggerFactory.getLogger(SecMerchantAccountController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecMerchantAccountController.class);
 
 
     @Autowired
@@ -47,24 +47,23 @@ public class SecMerchantAccountController extends BaseControllerUtil {
             @RequestParam(value = "page", required = false) int page) {
         Result<MMerchantAccount> result = null;
         try {
-             result=secMerchantAccountClient.search(filters, sorts, size, page);
+            result = secMerchantAccountClient.search(filters, sorts, size, page);
             if (result.getDetailModelList().size() > 0) {
-                for (MMerchantAccount temp : result.getDetailModelList()) {
-                    if (!RegexUtil.isNull(temp.getStatus())) {
-                        temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus().toString()));
+                result.getDetailModelList().stream().forEach(o -> {
+                    if (!RegexUtil.isNull(o.getStatus())) {
+                        o.setStatusName(CommonUtils.findByStatusName(o.getStatus().toString()));
                     }
-                    if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                        temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
+                    if (!RegexUtil.isNull(o.getMerchantLevel())) {
+                        o.setMerchantLevelName(CommonUtils.findMerchantLevel(o.getMerchantLevel()));
                     }
-
-                }
+                });
             }
-        }catch ( Exception e ){
+        } catch (Exception e) {
             logger.error("获取子代理(账号管理)列表失败！");
-            logger.error(e.getMessage(),e);
-            return  error("获取子代理(账号管理)列表失败！");
+            logger.error(e.getMessage(), e);
+            return error("获取子代理(账号管理)列表失败！");
         }
-        return  result;
+        return result;
     }
 
     @RequestMapping(value = ServiceUrls.SecMerchantAccount.SEC_MERCHANT_ACCOUNT, method = RequestMethod.POST)
@@ -76,13 +75,13 @@ public class SecMerchantAccountController extends BaseControllerUtil {
             @RequestParam(value = "password", required = false) String password) throws Exception {
         Result<MMerchantAccount> result = null;
         try {
-            result=secMerchantAccountClient.modifyPassword(id, password);
-        }catch ( Exception e ){
+            result = secMerchantAccountClient.modifyPassword(id, password);
+        } catch (Exception e) {
             logger.error("修改密码失败！");
-            logger.error(e.getMessage(),e);
-            return  error("修改密码失败！");
+            logger.error(e.getMessage(), e);
+            return error("修改密码失败！");
         }
-        return  result;
+        return result;
     }
 
     @RequestMapping(value = ServiceUrls.SecMerchantAccount.SEC_MERCHANT_ACCOUNT_MODIFY_STATUS_BY_ID, method = RequestMethod.POST)
@@ -94,13 +93,13 @@ public class SecMerchantAccountController extends BaseControllerUtil {
             @RequestParam(value = "status", required = false) String status) throws Exception {
         Result<MMerchantAccount> result = null;
         try {
-            result=secMerchantAccountClient.modifyStatusById(id, status);
-        }catch ( Exception e ){
+            result = secMerchantAccountClient.modifyStatusById(id, status);
+        } catch (Exception e) {
             logger.error("变更状态失败！");
-            logger.error(e.getMessage(),e);
-            return  error("变更状态失败！");
+            logger.error(e.getMessage(), e);
+            return error("变更状态失败！");
         }
-        return  result;
+        return result;
     }
 
 
@@ -111,29 +110,29 @@ public class SecMerchantAccountController extends BaseControllerUtil {
             @RequestBody @Valid MMerchantAccount mMerchantAccount) throws Exception {
         Result<MMerchantAccount> result = null;
         try {
-            result=secMerchantAccountClient.create(mMerchantAccount);
-        }catch ( Exception e ){
+            result = secMerchantAccountClient.create(mMerchantAccount);
+        } catch (Exception e) {
             logger.error("创建/修改子代理(账号管理)失败！");
-            logger.error(e.getMessage(),e);
-            return  error("创建/修改子代理(账号管理)失败！");
+            logger.error(e.getMessage(), e);
+            return error("创建/修改子代理(账号管理)失败！");
         }
-        return  result;
+        return result;
     }
 
     @RequestMapping(value = ServiceUrls.SecMerchantAccount.SEC_MERCHANT_ACCOUNTS, method = RequestMethod.DELETE)
     @ApiOperation(value = "根据ID删除账号", notes = "根据ID删除账号")
-    public Result<MMerchantAccount>  delete(
+    public Result<MMerchantAccount> delete(
             @ApiParam(name = "id", value = "id", defaultValue = "")
             @RequestParam(value = "id") Long id) throws Exception {
         Result<MMerchantAccount> result = null;
         try {
-            result=secMerchantAccountClient.delete(id);
-        }catch ( Exception e ){
+            result = secMerchantAccountClient.delete(id);
+        } catch (Exception e) {
             logger.error("删除账号失败！");
-            logger.error(e.getMessage(),e);
-            return  error("删除账号失败！");
+            logger.error(e.getMessage(), e);
+            return error("删除账号失败！");
         }
-        return  result;
+        return result;
     }
 
 }

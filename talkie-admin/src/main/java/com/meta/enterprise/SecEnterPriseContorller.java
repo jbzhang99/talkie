@@ -55,7 +55,7 @@ public class SecEnterPriseContorller extends BaseControllerUtil {
         try {
             result = secEnterPriseClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0) {
-                findDetail(result, getLanguage());
+                findDetail(result);
             }
 
         } catch (Exception e) {
@@ -67,25 +67,24 @@ public class SecEnterPriseContorller extends BaseControllerUtil {
     }
 
 
-    private Result<MEnterprise> findDetail(Result<MEnterprise> mEnterpriseResult, String language) {
-        for (MEnterprise temp : mEnterpriseResult.getDetailModelList()) {
+    private Result<MEnterprise> findDetail(Result<MEnterprise> result) {
+        result.getDetailModelList().stream().forEach(a->{
             Result<MQEnterprise> mqUser = null;
-            mqUser = qEnterpriseClient.findByUserId(temp.getId());
-            temp.setRemainQ(mqUser.getObj().getBalance());
-            temp.setModifyDate(mqUser.getObj().getModifyDate());
-            temp.setCountCompany(secEnterPriseClient.countByParentIdAndMerchantLevel(temp.getId(), "7"));
-
-            if ("zh".equals(language)) {
-                if (!RegexUtil.isNull(temp.getStatus())) {
-                    temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
+            mqUser = qEnterpriseClient.findByUserId(a.getId());
+            a.setRemainQ(mqUser.getObj().getBalance());
+            a.setModifyDate(mqUser.getObj().getModifyDate());
+            a.setCountCompany(secEnterPriseClient.countByParentIdAndMerchantLevel(a.getId(), "7"));
+            if ("zh".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getStatus())) {
+                    a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
                 }
-            } else if ("en".equals(language)) {
-                if (!RegexUtil.isNull(temp.getStatus())) {
-                    temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
+            } else if ("en".equals(getLanguage())) {
+                if (!RegexUtil.isNull(a.getStatus())) {
+                    a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
                 }
             }
-        }
-        return mEnterpriseResult;
+        });
+        return result;
     }
 
 

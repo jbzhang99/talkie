@@ -48,7 +48,7 @@ public class AccountantManageController extends BaseControllerUtil {
             result = accountantManageClient.search(filters, sorts, size, page);
             if (result.getDetailModelList().size() > 0) {
                 if (result.getDetailModelList().size() > 0) {
-                    findDetail(result, getLanguage());
+                    findDetail(result);
                 }
             }
         } catch (Exception e) {
@@ -132,21 +132,23 @@ public class AccountantManageController extends BaseControllerUtil {
         return result;
     }
 
-    private Result<MAccountant> findDetail(Result<MAccountant> mAccountantResult, String language) {
-        for (MAccountant temp : mAccountantResult.getDetailModelList()) {
-            if (language.equals("zh")) {
+    private Result<MAccountant> findDetail(Result<MAccountant> result) {
+
+        result.getDetailModelList().stream().forEach(a -> {
+            if (getLanguage().equals("zh")) {
                 //中文
-                temp.setStatusName(CommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(CommonUtils.findMerchantLevel(temp.getMerchantLevel()));
+                a.setStatusName(CommonUtils.findByStatusName(a.getStatus()));
+                if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                    a.setMerchantLevelName(CommonUtils.findMerchantLevel(a.getMerchantLevel()));
                 }
-            } else if ("en".equals(language)) {
-                temp.setStatusName(EnglishCommonUtils.findByStatusName(temp.getStatus()));
-                if (!RegexUtil.isNull(temp.getMerchantLevel())) {
-                    temp.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(temp.getMerchantLevel()));
+            } else if ("en".equals(getLanguage())) {
+                a.setStatusName(EnglishCommonUtils.findByStatusName(a.getStatus()));
+                if (!RegexUtil.isNull(a.getMerchantLevel())) {
+                    a.setMerchantLevelName(EnglishCommonUtils.findMerchantLevel(a.getMerchantLevel()));
                 }
             }
-        }
-        return mAccountantResult;
+
+        });
+        return result;
     }
 }
