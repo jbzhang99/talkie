@@ -57,6 +57,32 @@ public class MerchantController extends BaseControllerUtil {
             result = merchantClient.search(filters, "-createDate", size, page);
             if (result.getDetailModelList().size() > 0 && result.getDetailModelList() != null) {
                 findDetail(result, getLanguage());
+
+//                result.getDetailModelList().stream().map( o->{
+//                 if("zh".endsWith(getLanguage())){
+//                     o.setStatusName(CommonUtils.findByStatusName(o.getStatus()));
+//                 } else if ("en".equals(getLanguage()) ){
+//                     o.setStatusName(EnglishCommonUtils.findByStatusName(o.getStatus()));
+//                 } else {
+//                     return  error("目前不支持该语言!");
+//                 }
+//                    Result<MQMerchant> mqUser = null;
+//                    mqUser = qMerchantClient.get(o.getId());
+//                    o.setRemainQ(mqUser.getObj().getBalance());
+//                    Result<MMerchant> mMerchantResult1 = merchantClient.searchNoPage("EQ_parentId=" + o.getId());
+//                    if (!RegexUtil.isNull(mMerchantResult1.getDetailModelList())) {
+////                        Long count = 0L;
+////                        for (MMerchant mMerchant : mMerchantResult1.getDetailModelList()) {
+////                            count += merchantClient.countParnetIdAndMerchantLevel(mMerchant.getId(), "7");
+////                        }
+////                        o.setCountTerminal(count);
+//                        (mMerchantResult1.getDetailModelList().stream().map()
+//                    }
+//                    o.setCountCompany(merchantClient.countParnetIdAndMerchantLevel(o.getId(), "4"));
+//                    o.setModifyDate(mqUser.getObj().getModifyDate());
+//                    return  o;
+//                });
+
             }
         } catch (Exception e) {
             logger.error("获取代理列表异常！");
