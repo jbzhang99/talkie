@@ -59,6 +59,9 @@ public class AccountantEventController extends BaseControllerUtil {
         return result;
     }
 
+
+
+
     private Result<MAccountantEvent> findDetail(Result<MAccountantEvent> result) {
         result.getDetailModelList().stream().forEach(a->{
             if ("zh".equals(getLanguage())) {
